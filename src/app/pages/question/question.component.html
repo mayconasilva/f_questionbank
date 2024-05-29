@@ -1,0 +1,31 @@
+<h2>Lista de Questões</h2>
+
+<app-question-new title="Nova Questão"></app-question-new>
+
+<div class="question-list">
+    <ng-container *ngIf="questions.length > 0; else noQuestionsFound">
+        <div class="question-card" *ngFor="let question of questions">
+            <div class="question-detail">
+                <div class="question-title">
+                    <h3>{{question.questionTitle}}</h3>
+                </div>
+                <div class="question-description">
+                    <span>{{question.content}}|{{question.discipline}}</span>
+                </div>
+            </div>
+            <div class="question-link">
+                <a href="#">VISUALIZAR</a>
+            </div>
+        </div>
+    </ng-container>
+    <ng-template #noQuestionsFound>
+        <div class="no-questions">
+            <h3>Nenhuma questão encontrada.</h3>
+            <img src="../../../assets/images/notfound-icon.svg" alt="not-found-icon">
+         
+            <button (click)="refreshPage()">Atualizar</button>
+        </div>
+    </ng-template>
+
+
+</div>

@@ -30,9 +30,12 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/trix/dist/trix.css",
               "src/styles.scss"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/trix/dist/trix.esm.js"
+            ],
             "server": "src/main.server.ts",
             "prerender": true,
             "ssr": {
@@ -102,5 +105,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "20f85e55-1e16-4286-84b4-1bf41e028096"
   }
 }

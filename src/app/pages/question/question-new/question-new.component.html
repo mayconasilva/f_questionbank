@@ -1,0 +1,64 @@
+<app-modal [isVisible]="isModalVisible">
+  <h2>Nova Questão</h2>
+
+  <form [formGroup]="questionForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="questionTitle">Título da Questão:</label>
+      <input id="questionTitle" formControlName="questionTitle" type="text">
+    </div>
+
+    <div class="form-group">
+      <label for="questionYear">Ano da Questão:</label>
+      <input id="questionYear" formControlName="questionYear" type="number">
+    </div>
+
+    <div class="form-group">
+      <label for="testBoard">Banca Examinadora:</label>
+      <select id="testBoard" formControlName="testBoard">
+        <option *ngFor="let board of testBoard" [ngValue]="board">{{ board.testBoardName }}</option>
+      </select>
+    </div>
+
+      <div class="form-group">
+        <label for="areaOfKnowledge">Área de Conhecimento:</label>
+        <select id="areaOfKnowledge" formControlName="areaOfKnowledge">
+          <option *ngFor="let option of areaOfKnowledgeOptions" [value]="option.value.keyArea">{{ option.value.areaName
+            }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="discipline">Disciplina:</label>
+        <input id="discipline" formControlName="discipline" type="text">
+      </div>
+
+    <div class="form-group">
+      <label for="content">Conteúdo:</label>
+      <input type="text" id="content" formControlName="content">
+    </div>
+
+    <div class="form-group">
+      <label for="statement">Enunciado:</label>
+      <trix-editor id="statement" formControlName="statement"></trix-editor>
+    </div>
+
+    <div class="form-group">
+      <label for="answer">Resposta:</label>
+      <input type="text" id="answer" formControlName="answer">
+    </div>
+
+    <div class="form-group">
+      <label for="solution">Solução:</label>
+      <trix-editor id="solution" formControlName="solution"></trix-editor>
+    </div>
+
+    <div class="col">
+      <button type="submit">Salvar</button>
+      <button type="button" (click)="closeModal()" class="cancel">Cancelar</button>
+    </div>
+  </form>
+</app-modal>
+
+<div class="toolbar">
+  <button (click)="openModal()">Adicionar Nova Questão</button>
+</div>
