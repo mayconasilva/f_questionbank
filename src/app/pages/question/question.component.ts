@@ -4,11 +4,12 @@ import { QuestionResponse } from '../../data/question';
 import { QuestionApiResponse } from '../../data/apiResponse';
 import { CommonModule } from '@angular/common';
 import { QuestionNewComponent } from './question-new/question-new.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-question',
   standalone: true,
-  imports: [CommonModule, QuestionNewComponent],
+  imports: [CommonModule, QuestionNewComponent, RouterModule],
   templateUrl: './question.component.html',
   styleUrls: ['./question.component.scss']
 })
@@ -18,6 +19,8 @@ export class QuestionComponent implements OnInit {
   questions: QuestionResponse[] = [];
   totalPages: number = 0;
   currentPage: number = 0;
+  isModalOpen: boolean = false;
+  selectedQuestion: QuestionResponse | null = null;
 
   constructor(private questionService: QuestionService) {}
 
@@ -42,6 +45,16 @@ export class QuestionComponent implements OnInit {
 
   refreshPage() {
     window.location.reload();
+}
+
+openModal(question: QuestionResponse): void {
+  this.selectedQuestion = question;
+  this.isModalOpen = true;
+}
+
+closeModal(): void {
+  this.isModalOpen = false;
+  this.selectedQuestion = null;
 }
 
   

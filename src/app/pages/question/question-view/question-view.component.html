@@ -1,1 +1,29 @@
-<p>question-view works!</p>
+<div class="question-view">
+    <h2>{{question?.questionTitle}}</h2>
+
+    <div class="details">
+        <div class="area-discipline">
+            <div class="area">
+                <p>{{question?.areaOfKnowledge}}</p>
+            </div>
+            <div class="discipline">
+                <p>{{question?.discipline}}</p>
+            </div>
+        </div>
+        <div class="content">
+            <p>{{question?.content}}</p>
+        </div>
+    </div>
+    <div class="question-body">
+        {{question?.statement}}
+
+        <div class="answer">
+            <span><strong>Resposta</strong> {{question?.answer}}</span>
+        </div>
+    </div>
+    <div class="solution">
+        <h3>Solução da Questão</h3>
+
+        {{question?.solution}}
+    </div>
+</div>

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { QuestionRequest } from '../data/question';
+import { QuestionRequest, QuestionResponse } from '../data/question';
 import { QuestionApiResponse } from '../data/apiResponse';
 
 @Injectable({
@@ -19,5 +19,9 @@ export class QuestionService {
 
   createQuestion(question: QuestionRequest): Observable<QuestionRequest> {
     return this.http.post<QuestionRequest>(this.apiUrl, question);
+  }
+
+  getQuestion(id: string): Observable<QuestionResponse> {
+    return this.http.get<QuestionResponse>(`${this.apiUrl}/${id}`);
   }
 }
