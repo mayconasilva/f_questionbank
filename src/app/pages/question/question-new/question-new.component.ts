@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ModalComponent } from '../../../components/modal/modal.component';
 import { TestBoardApiResponse } from '../../../data/apiResponse';
 import { TestBoardService } from '../../../services/test-board.service';
@@ -8,12 +8,13 @@ import { TestBoardResponse } from '../../../data/testBoard';
 import { AreaOfKnowledgeDetails, AreaOfKnowledgeDetailsMap, AreaOfKnowledgeEnum } from '../../../enums/areaOfKnowledge';
 import { TrixEditorModule } from '../../../modules/trix-editor/trix-editor.module';
 import { QuestionService } from '../../../services/question.service';
-import { QuestionRequest } from '../../../data/question';
+import { QuestionRequest, QuestionResponse } from '../../../data/question';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-question-new',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ModalComponent, FormsModule, TrixEditorModule],
+  imports: [CommonModule, ReactiveFormsModule, ModalComponent, TrixEditorModule],
   templateUrl: './question-new.component.html',
   styleUrls: ['./question-new.component.scss']
 })
@@ -52,16 +53,17 @@ export class QuestionNewComponent implements OnInit {
   }
 
   getAllTestBoard(): void {
-    try {
-      this.testBoardService.getAllTestBoard().subscribe((response: TestBoardApiResponse) => {
-        this.testBoard = response.content;
-        this.totalPages = response.totalPages;
-        this.currentPage = response.number;
-      });
-      console.log("Request for All TestBoard");
-    } catch {
-      console.log("An error occurred");
-    }
+    this.testBoardService.getAllTestBoard().subscribe((response: HttpResponse<TestBoardApiResponse>) => {
+      if (response.body) {
+        this.testBoard = response.body.content;
+        this.totalPages = response.body.totalPages;
+        this.currentPage = response.body.number;
+      }
+      this.handleResponseMessage(response);
+    }, (error) => {
+      this.handleResponseMessage(error);
+      console.error("An error occurred while fetching test boards:", error);
+    });
   }
 
   openModal(): void {
@@ -84,14 +86,31 @@ export class QuestionNewComponent implements OnInit {
   }
 
   saveQuestion(newQuestion: QuestionRequest): void {
-    try {
-      this.questionService.createQuestion(newQuestion).subscribe((response: QuestionRequest) => {
-        console.log('Nova questão criada:', response);
-        // Atualiza a lista de perguntas após adicionar uma nova questão
-        this.closeModal();
-      });
-    } catch {
-      console.log("An error occurred while saving the question");
+    this.questionService.createQuestion(newQuestion).subscribe((response: HttpResponse<any>) => {
+      if (response.body) {
+        console.log('Nova questão criada:', response.body);
+      }
+      this.handleResponseMessage(response);
+      // Atualiza a lista de perguntas após adicionar uma nova questão
+      this.closeModal();
+    }, (error) => {
+      this.handleResponseMessage(error);
+      console.error("An error occurred while saving the question:", error);
+    });
+  }
+  
+
+  handleResponseMessage(response: HttpResponse<any> | any): void {
+    if (response instanceof HttpResponse) {
+      console.log("Mensagem de sucesso:", response.status, response.statusText);
+      if (response.body && response.body.message) {
+        console.log("Mensagem:", response.body.message);
+      }
+    } else {
+      console.log("Mensagem de erro:", response.status, response.statusText);
+      if (response.error && response.error.message) {
+        console.log("Mensagem de erro:", response.error.message);
+      }
     }
   }
 }

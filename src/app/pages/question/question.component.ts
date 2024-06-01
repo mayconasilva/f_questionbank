@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { QuestionService } from '../../services/question.service';
 import { QuestionResponse } from '../../data/question';
 import { QuestionApiResponse } from '../../data/apiResponse';
+import { HttpResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { QuestionNewComponent } from './question-new/question-new.component';
 import { RouterModule } from '@angular/router';
@@ -29,33 +30,46 @@ export class QuestionComponent implements OnInit {
   }
 
   getAllQuestions(): void {
-    try {
-      this.questionService.getAllQuestion().subscribe((response: QuestionApiResponse) => {
+    this.questionService.getAllQuestion().subscribe((response: HttpResponse<QuestionApiResponse>) => {
+      if (response.body) {
         // Atualiza a lista de perguntas
-        this.questions = response.content;
+        this.questions = response.body.content;
         // Atualiza informações de paginação
-        this.totalPages = response.totalPages;
-        this.currentPage = response.number;
-      });
-      console.log("Request for All Questions"); 
-    } catch {
-      console.log("An error occurred");
-    }
+        this.totalPages = response.body.totalPages;
+        this.currentPage = response.body.number;
+      }
+      this.handleResponseMessage(response);
+    }, (error) => {
+      this.handleResponseMessage(error);
+      console.error("An error occurred while fetching questions", error);
+    });
   }  
 
   refreshPage() {
     window.location.reload();
-}
+  }
 
-openModal(question: QuestionResponse): void {
-  this.selectedQuestion = question;
-  this.isModalOpen = true;
-}
+  openModal(question: QuestionResponse): void {
+    this.selectedQuestion = question;
+    this.isModalOpen = true;
+  }
 
-closeModal(): void {
-  this.isModalOpen = false;
-  this.selectedQuestion = null;
-}
+  closeModal(): void {
+    this.isModalOpen = false;
+    this.selectedQuestion = null;
+  }
 
-  
+  handleResponseMessage(response: HttpResponse<any> | any): void {
+    if (response instanceof HttpResponse) {
+      console.log("Mensagem de sucesso:", response.status, response.statusText);
+      if (response.body && response.body.message) {
+        console.log("Mensagem:", response.body.message);
+      }
+    } else {
+      console.log("Mensagem de erro:", response.status, response.statusText);
+      if (response.error && response.error.message) {
+        console.log("Mensagem de erro:", response.error.message);
+      }
+    }
+  }  
 }

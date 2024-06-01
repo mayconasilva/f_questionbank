@@ -1,37 +1,70 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { QuestionResponse } from '../../../data/question';
-import { ModalComponent } from '../../../components/modal/modal.component';
 import { QuestionService } from '../../../services/question.service';
+import { AreaOfKnowledgeDetailsMap, AreaOfKnowledgeEnum } from '../../../enums/areaOfKnowledge';
+import { QuestionUpdateComponent } from '../question-update/question-update.component';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-question-view',
   standalone: true,
-  imports: [],
+  imports: [QuestionUpdateComponent],
   templateUrl: './question-view.component.html',
-  styleUrl: './question-view.component.scss'
+  styleUrls: ['./question-view.component.scss']
 })
 export class QuestionViewComponent implements OnInit {
-  questionId: string = '1';
-  question: QuestionResponse | undefined;
+  questionId!: string;
+  question!: QuestionResponse;
+
+  constructor(
+    private questionService: QuestionService,
+    private sanitizer: DomSanitizer,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.getQuestion();
+    this.route.paramMap.subscribe(params => {
+      this.questionId = params.get('id')!;
+      this.getQuestion();
+    });
   }
 
-  constructor(private questionService: QuestionService){
-    this.questionService = questionService
+  getQuestion(): void {
+    this.questionService.getQuestion(this.questionId).subscribe(
+      (response: HttpResponse<QuestionResponse>) => {
+        if (response.body) {
+          this.question = response.body;
+        }
+        this.handleResponseMessage(response);
+      },
+      (error) => {
+        this.handleResponseMessage(error);
+        console.error('Erro ao buscar a questão:', error);
+      }
+    );
   }
 
+  sanitizeHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
 
-  getQuestion(){
-    try {
-      this.questionService.getQuestion(this.questionId).subscribe((response: QuestionResponse) => {
-       this.question = response;
-      });
-      console.log("Request question");
-    } catch {
-      console.log("An error occurred");
+  getAreaName(key: AreaOfKnowledgeEnum): string {
+    return AreaOfKnowledgeDetailsMap[key]?.areaName || 'Área desconhecida';
+  }
+
+  handleResponseMessage(response: HttpResponse<any> | any): void {
+    if (response instanceof HttpResponse) {
+      console.log("Mensagem de sucesso:", response.status, response.statusText);
+      if (response.body && response.body.message) {
+        console.log("Mensagem:", response.body.message);
+      }
+    } else {
+      console.log("Mensagem de erro:", response.status, response.statusText);
+      if (response.error && response.error.message) {
+        console.log("Mensagem de erro:", response.error.message);
+      }
     }
   }
-
 }
