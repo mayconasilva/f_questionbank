@@ -1,0 +1,107 @@
+.toolbar {
+    width: 100%;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0.4vh 0.6vw;
+
+    button {
+        font-size: 1.4em;
+        font-weight: bold;
+        background-color: #4D1480;
+        border: none;
+        border-radius: 18px;
+        text-decoration: none;
+        padding: 10px;
+        color: white;
+
+        &:hover {
+            font-size: 1.5em;
+            background-color: #142180;
+            transition: 0.5s ease-in-out;
+        }
+    }
+}
+
+h2 {
+    margin-bottom: 1.2vh;
+}
+
+form {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+
+    .form-group {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex-direction: column;
+        width: 100%;
+
+        margin-bottom: 0.5vh;
+
+        label {
+            align-self: flex-start;
+            margin-left: 3em;
+            font-family: "REM", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-size: 1.2em;
+        }
+
+        input[type=text],
+        input[type=number],
+        select {
+            width: 80%;
+            height: 4vh;
+            font-size: 1em;
+            font-family: "Noto Serif JP", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            text-align: center;
+        }
+    }
+
+    button {
+        font-weight: bold;
+        color: white;
+
+        width: 10vw;
+        height: 6vh;
+
+        border: none;
+
+        background-color: #142180;
+
+        
+
+        &.cancel {
+            background-color: transparent;
+            border: 0.2px solid #4D1480;
+            color: #142180;
+        }
+
+        &:hover {
+            color: white;
+            transition: 0.5s ease-in-out;
+            background-color: #4D1480;
+        }
+
+
+    }
+}
+
+.trix-toolbar {
+    background: #f3f3f3;
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+
+div.col{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}

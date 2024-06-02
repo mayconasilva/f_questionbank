@@ -1,0 +1,24 @@
+<app-modal [isVisible]="isModalVisible">
+    <h2>Nova Banca Examinadora</h2>
+
+    <form [formGroup]="testBoardForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="testBoardAcronym">Sigla da Banca (se não houver repetir o nome completo):</label>
+            <input id="testBoardAcronym" formControlName="testBoardAcronym" type="text">
+        </div>
+        <div class="form-group">
+            <label for="testBoardName">Nome Completo:</label>
+            <input id="testBoardName" formControlName="testBoardName" type="text">
+        </div>
+
+
+        <div class="col">
+            <button type="submit">Salvar</button>
+            <button type="button" (click)="closeModal()" class="cancel">Cancelar</button>
+        </div>
+    </form>
+</app-modal>
+
+<div class="toolbar">
+    <button (click)="openModal()">Adicionar Nova Banca Examinadora</button>
+</div>

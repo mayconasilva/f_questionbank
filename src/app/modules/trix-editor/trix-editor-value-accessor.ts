@@ -1,6 +1,8 @@
 import { Directive, forwardRef, HostListener, ElementRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
+declare var MathJax: any;
+
 @Directive({
   selector: 'trix-editor',
   providers: [
@@ -27,7 +29,6 @@ export class TrixEditorValueAccessorDirective implements ControlValueAccessor {
       }, 100); // Aguarda 100ms e tenta novamente
     }
   }
-  
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
@@ -41,10 +42,17 @@ export class TrixEditorValueAccessorDirective implements ControlValueAccessor {
   onTrixChange(event: any): void {
     const value = this.elementRef.nativeElement.innerHTML;
     this.onChange(value);
+    this.renderMath();
   }
 
   @HostListener('blur')
   onTrixTouched(): void {
     this.onTouched();
+  }
+
+  private renderMath() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.typesetPromise();
+    }
   }
 }

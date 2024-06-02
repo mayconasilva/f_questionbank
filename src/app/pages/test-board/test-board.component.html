@@ -1,1 +1,29 @@
-<p>test-board works!</p>
+<h2>Lista de Bancas Examinadoras</h2>
+
+<app-test-board-new title="Nova Banca Examinadora"></app-test-board-new>
+
+<div class="testBoard-list">
+    <ng-container *ngIf="testBoards.length > 0; else notestBoardsFound">
+        <div class="testBoard-card" *ngFor="let testBoard of testBoards">
+            <div class="testBoard-title">
+                <h3>{{testBoard.testBoardAcronym}}</h3>
+            </div>
+            <div class="testBoard-description">
+                <span>{{testBoard.testBoardName}}</span>
+            </div>
+            <div class="testBoard-link">
+                <a [routerLink]="testBoard.testBoardId.toString()">VISUALIZAR</a>
+            </div>
+        </div>
+    </ng-container>
+    <ng-template #notestBoardsFound>
+        <div class="no-testBoards">
+            <h3>Nenhuma Banca Examinadora encontrada.</h3>
+            <img src="../../../assets/images/notfound-icon.svg" alt="not-found-icon">
+
+            <button (click)="refreshPage()">Atualizar</button>
+        </div>
+    </ng-template>
+
+
+</div>

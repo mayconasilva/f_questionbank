@@ -5,3 +5,8 @@ export  interface TestBoardResponse{
     createdDate: Date;
     lastModifiedDate: Date;
 }
+
+export  interface TestBoardRequest{
+    testBoardName: string;
+    testBoardAcronym: string;
+}
