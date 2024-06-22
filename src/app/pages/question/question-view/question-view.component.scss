@@ -61,3 +61,30 @@ div.question-view{
     }
 
 }
+
+.toolbar {
+  width: 100%;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.4vh 0.6vw;
+  align-self: center;
+
+  button {
+      font-size: 1.4em;
+      font-weight: bold;
+      background-color: #4D1480;
+      border: none;
+      border-radius: 18px;
+      text-decoration: none;
+      padding: 10px;
+      color: white;
+
+      &:hover {
+          font-size: 1.5em;
+          background-color: #142180;
+          transition: 0.5s ease-in-out;
+      }
+  }
+}

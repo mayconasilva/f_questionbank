@@ -1,3 +1,4 @@
+import { AreaOfKnowledgeDetails } from './../../../enums/areaOfKnowledge';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -16,7 +17,20 @@ import { HttpResponse } from '@angular/common/http';
 })
 export class QuestionViewComponent implements OnInit {
   questionId!: string;
-  question!: QuestionResponse;
+  question: QuestionResponse = {
+    questionId: 0,
+    questionTitle: '',
+    questionYear: new Date(),
+    testBoard: [],
+    areaOfKnowledge: AreaOfKnowledgeEnum.CIENCIAS_HUMANAS,
+    discipline: '',
+    content: '',
+    statement: '',
+    answer: '',
+    solution: '',
+    createdDate: new Date(),
+    lastModifiedDate: new Date()
+  }  ;
 
   constructor(
     private questionService: QuestionService,
@@ -44,6 +58,16 @@ export class QuestionViewComponent implements OnInit {
         console.error('Erro ao buscar a questão:', error);
       }
     );
+  }
+  deleteQuestion(id: string): void {
+    this.questionService.deleteQuestion(id).subscribe({
+      next: () => {
+        console.log(`Question with id ${id} deleted successfully.`);
+      },
+      error: (err) => {
+        console.error('Error deleting question:', err);
+      }
+    });
   }
 
   sanitizeHtml(html: string): SafeHtml {

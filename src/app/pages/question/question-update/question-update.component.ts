@@ -11,6 +11,7 @@ import { TestBoardService } from '../../../services/test-board.service';
 import { QuestionService } from '../../../services/question.service';
 import { QuestionRequest, QuestionResponse } from '../../../data/question';
 import { HttpResponse } from '@angular/common/http';
+import { response } from 'express';
 
 @Component({
   selector: 'app-question-update',
@@ -90,6 +91,7 @@ export class QuestionUpdateComponent implements OnInit {
       console.error("An error occurred while loading the question", error);
     });
   }
+
 
   openModal(): void {
     this.isModalVisible = true;

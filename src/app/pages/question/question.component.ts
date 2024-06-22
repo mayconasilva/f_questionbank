@@ -29,8 +29,8 @@ export class QuestionComponent implements OnInit {
     this.getAllQuestions();
   }
 
-  getAllQuestions(): void {
-    this.questionService.getAllQuestion().subscribe((response: HttpResponse<QuestionApiResponse>) => {
+  getAllQuestions(page: number = 0): void {
+    this.questionService.getAllQuestions(page).subscribe((response: HttpResponse<QuestionApiResponse>) => {
       if (response.body) {
         // Atualiza a lista de perguntas
         this.questions = response.body.content;
@@ -43,9 +43,9 @@ export class QuestionComponent implements OnInit {
       this.handleResponseMessage(error);
       console.error("An error occurred while fetching questions", error);
     });
-  }  
+  }
 
-  refreshPage() {
+  refreshPage(): void {
     window.location.reload();
   }
 
@@ -71,5 +71,5 @@ export class QuestionComponent implements OnInit {
         console.log("Mensagem de erro:", response.error.message);
       }
     }
-  }  
+  }
 }

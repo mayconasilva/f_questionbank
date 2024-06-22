@@ -1,8 +1,8 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {  QuestionRequest, QuestionResponse } from '../data/question';
-import {QuestionApiResponse} from '../data/apiResponse'
+import { QuestionRequest, QuestionResponse } from '../data/question';
+import { QuestionApiResponse } from '../data/apiResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -12,19 +12,23 @@ export class QuestionService {
 
   constructor(private http: HttpClient) {}
 
-  getAllQuestion(): Observable<HttpResponse<QuestionApiResponse>> {
-    return this.http.get<QuestionApiResponse>(this.apiUrl, { observe: 'response' });
+  getAllQuestions(page: number = 0, size: number = 10): Observable<HttpResponse<QuestionApiResponse>> {
+    return this.http.get<QuestionApiResponse>(`${this.apiUrl}?page=${page}&size=${size}`, { observe: 'response' });
   }
 
-  createQuestion(question: QuestionRequest): Observable<HttpResponse<QuestionRequest>> {
-    return this.http.post<QuestionRequest>(this.apiUrl, question, { observe: 'response' });
+  createQuestion(question: QuestionRequest): Observable<HttpResponse<any>> {
+    return this.http.post<any>(this.apiUrl, question, { observe: 'response' });
   }
 
   getQuestion(id: string): Observable<HttpResponse<QuestionResponse>> {
     return this.http.get<QuestionResponse>(`${this.apiUrl}/${id}`, { observe: 'response' });
   }
 
-  updateQuestion(id: string, question: QuestionRequest): Observable<HttpResponse<QuestionRequest>> {
-    return this.http.put<QuestionRequest>(`${this.apiUrl}/${id}`, question, { observe: 'response' });
+  updateQuestion(id: string, question: QuestionRequest): Observable<HttpResponse<any>> {
+    return this.http.put<any>(`${this.apiUrl}/${id}`, question, { observe: 'response' });
+  }
+
+  deleteQuestion(id: string): Observable<HttpResponse<any>> {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`, { observe: 'response' });
   }
 }
