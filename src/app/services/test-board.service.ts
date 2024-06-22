@@ -23,7 +23,9 @@ export class TestBoardService {
     return this.http.get<TestBoardResponse>(`${this.apiUrl}/${id}`, { observe: 'response' });
   }
 
+  /*
   updateTestBoard(id: string, testBoard: TestBoardRequest): Observable<HttpResponse<TestBoardRequest>> {
     return this.http.put<TestBoardRequest>(`${this.apiUrl}/${id}`, testBoard, { observe: 'response' });
   }
+    */
 }
